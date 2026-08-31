@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: MIT
+// contract BabbanToken.sol
+
+pragma solidity 0.8.24;
+
+contract BabbanBilloToken{
+    string public Name;
+    string public symbol;
+    uint256 public TotalSupply;
+    address public owner;
+    uint8 public decimals =18;
+    mapping(address=>uint256) public balances;
+    mapping(address =>mapping(address => uint256))public allowance ;
+    
+    constructor( ){
+        Name = "BabbanBillo";
+        symbol = "BBL";
+        owner = msg.sender;
+        
+        _mint(msg.sender,100 *10** decimals);
+    }
+    function _mint(address to ,uint256 amount)internal {
+        TotalSupply += amount;
+        balances[to] += amount;
+    }
+
+    function mint(address to ,uint256 amount)public{
+        require(msg.sender == owner,"you are not the owner");
+
+        _mint(to,amount);
+    }
+    function transfer(address to , uint256 amount)public{
+        balances[msg.sender] -= amount ;
+        balances[to] += amount ;
+    }
+    function burn(uint256 amount)public{
+        balances[msg.sender] -= amount;
+        TotalSupply -= amount;
+        
+         
+    }
+
+}
+
